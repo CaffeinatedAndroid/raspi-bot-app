@@ -1,5 +1,6 @@
 package caffeinatedandroid.rpibotcontrol
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -75,6 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_send -> {
 
+            }
+            R.id.nav_settings -> {
+                // Open Settings Activity
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
 
