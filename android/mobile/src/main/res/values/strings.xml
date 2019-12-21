@@ -81,4 +81,7 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="nav_drawer_group_manage">Manage</string>
+    <string name="nav_drawer_item_connection">Connection</string>
+    <string name="nav_drawer_item_settings">Settings</string>
 </resources>
