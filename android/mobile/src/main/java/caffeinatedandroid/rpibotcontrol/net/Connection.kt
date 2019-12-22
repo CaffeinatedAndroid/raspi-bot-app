@@ -5,7 +5,7 @@ import caffeinatedandroid.rpibotcontrol.net.bluetooth.BLE
 interface IConnection {
     fun connect()
     fun disconnect()
-    fun send(msgType: MessageType, msg: String)
+    fun send(msgType: MessageType, msg: String): String
 }
 
 enum class MessageType {
