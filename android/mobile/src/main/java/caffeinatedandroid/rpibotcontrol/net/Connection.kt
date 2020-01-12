@@ -9,8 +9,18 @@ interface IConnection {
 }
 
 enum class MessageType {
-    MoveForward, MoveBackward, MoveLeft, MoveRight,
-    Pause, Resume
+    // System
+    Discover,
+    // Navigation (Direct)
+    MoveForward,
+    MoveBackward,
+    MoveLeft,
+    MoveRight,
+    // Other
+    Pause,
+    Resume,
+    // Power State
+    Shutdown,
 }
 
 object Connection {
