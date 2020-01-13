@@ -16,6 +16,16 @@ android:
     - $ANDROID_IMAGE_TARGET
     - $ANDROID_IMAGE
 
+# Cache management for Android projects (recommended by Travis CI)
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
 # Emulator Management: Create, Start and Wait
 before_script:
   - echo no | android create avd --force -n test -t $ANDROID_IMAGE_TARGET --abi armeabi-v7a -c 100M
