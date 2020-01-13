@@ -7,26 +7,34 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class TCP(private val host: String, private val port: Int) : IConnection {
+class TCP(private val host: String, private val port: Int = defaultTcpPort) : IConnection {
 
-    private lateinit var clientSocket: Socket
+    companion object {
+        const val defaultTcpPort = 8088
+    }
+
+    private var clientSocket: Socket? = null
     private lateinit var out: PrintWriter
     private lateinit var `in`: BufferedReader
 
     override fun connect() {
         clientSocket = Socket(host, port)
-        out = PrintWriter(clientSocket.getOutputStream(), true)
-        `in` = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
+        out = PrintWriter(clientSocket!!.getOutputStream(), true)
+        `in` = BufferedReader(InputStreamReader(clientSocket!!.getInputStream()))
     }
 
-    override fun disconnect() {
-        `in`.close()
-        out.close()
-        clientSocket.close()
+    fun isConnected(): Boolean {
+        return clientSocket?.isConnected ?: false
     }
 
     override fun send(msgType: MessageType, msg: String): String {
         out.println(msg)
         return `in`.readLine()
+    }
+
+    override fun close() {
+        `in`.close()
+        out.close()
+        clientSocket?.close()
     }
 }

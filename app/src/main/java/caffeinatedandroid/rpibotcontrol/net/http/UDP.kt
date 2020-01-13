@@ -1,6 +1,5 @@
 package caffeinatedandroid.rpibotcontrol.net.http
 
-import android.R.attr.data
 import android.content.Context
 import android.net.wifi.WifiManager
 import caffeinatedandroid.rpibotcontrol.net.IConnection
@@ -24,15 +23,15 @@ class UDP(private val host: String, private val port: Int = 51927, private val b
         udpSocket = DatagramSocket(port)
     }
 
-    override fun disconnect() {
-        udpSocket.close()
-    }
-
     override fun send(msgType: MessageType, msg: String): String {
         val buf = msg.toByteArray()
         val packet = DatagramPacket(buf, buf.size, serverAddr, port)
         udpSocket.send(packet)
         return ""
+    }
+
+    override fun close() {
+        udpSocket.close()
     }
 
     fun discoverConnections(context: Context) {

@@ -1,10 +1,10 @@
 package caffeinatedandroid.rpibotcontrol.net
 
 import caffeinatedandroid.rpibotcontrol.net.bluetooth.BLE
+import java.io.Closeable
 
-interface IConnection {
+interface IConnection: Closeable {
     fun connect()
-    fun disconnect()
     fun send(msgType: MessageType, msg: String): String
 }
 
@@ -38,7 +38,7 @@ object Connection {
     }
 
     fun resetConnectionType() {
-        conn.disconnect()
+        conn.close()
         init()
         conn.connect()
     }
