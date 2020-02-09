@@ -4,6 +4,72 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+// Code coverage (of Unit Tests)
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "$jacocoVersion"
+    reportsDir = file("$buildDir/reports/coverage")
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+/**
+ * Task that generates JaCoCo (code coverage) report for Unit Tests, and combines the results
+ * with any coverage reports for the Instrumented Tests, resulting in one unified code coverage
+ * report.
+ *
+ * Works for Java and/or Kotlin projects.
+ *
+ * Created with help from these sources:
+ * http://vgaidarji.me/blog/2017/12/20/how-to-configure-jacoco-for-kotlin-and-java-project/
+ * https://stackoverflow.com/a/43992697/508098
+ */
+//task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+task jacocoUnitTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+    group = "Verification"
+    description = "Creates Jacoco test coverage report for Unit and Instrumented Tests (combined) on the Debug build"
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    // Files to exclude:
+    // Generated classes, platform classes, etc.
+    def excludes = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*'
+    ]
+
+    // generated classes
+    classDirectories.from = fileTree(
+            dir: "$buildDir/intermediates/classes/debug",
+            excludes: excludes
+    ) + fileTree(
+            dir: "$buildDir/tmp/kotlin-classes/debug",
+            excludes: excludes
+    )
+    // sources
+    sourceDirectories.from = [
+            android.sourceSets.main.java.srcDirs,
+            "src/main/kotlin"
+    ]
+    // Output and existing data
+    // Combine Unit test and Instrumented test reports
+    executionData.from = fileTree(dir: "$buildDir", includes: [
+            // Unit tests coverage data
+            "jacoco/testDebugUnitTest.exec",
+            // Instrumented tests coverage data
+            "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
+    ])
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -20,6 +86,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -27,6 +96,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 
@@ -43,6 +117,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
+    // Testing
     testImplementation 'junit:junit:4.12'
     testImplementation "com.google.truth:truth:1.0"
     testImplementation "com.google.truth.extensions:truth-java8-extension:1.0"
