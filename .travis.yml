@@ -41,7 +41,7 @@ before_script:
 
 script:
   # Build and Unit tests
-  - ./gradlew build
+  - ./gradlew buildDebug
   # Build, test, then Instrumentation tests (Default script)
   # - ./gradlew build connectedCheck
   - ./gradlew jacocoUnitTestReport
