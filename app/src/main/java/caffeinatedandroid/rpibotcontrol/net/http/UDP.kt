@@ -10,35 +10,47 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 
 
-class UDP(private val host: String, private val port: Int = 51927, private val broadcast_port: Int = 51928) : IConnection {
+class UDP(host: String, private val port: Int = 51927, private val broadcast_port: Int = 51928) : IConnection {
 
-    private lateinit var udpSocket: DatagramSocket
-    private val serverAddr: InetAddress = InetAddress.getByName(host)
-
-    init {
-        connect()
-    }
+    private var udpSocket: DatagramSocket? = null
+    private val serverAddress: InetAddress = InetAddress.getByName(host)
+    // Copies of local and server ports - they can be made different (e.g., for 'localhost' testing)
+    var serverPort = port
+    var serverBroadcastPort = broadcast_port
 
     override fun connect() {
         udpSocket = DatagramSocket(port)
     }
 
-    override fun send(msgType: MessageType, msg: String): String {
+    override fun isConnected(): Boolean {
+        return udpSocket?.isBound ?: false
+    }
+
+    override fun send(msgType: MessageType, msg: String): String? {
+        if(udpSocket == null) {
+            throw IOException("DatagramSocket not bound. Connect first to bind to port.")
+        }
         val buf = msg.toByteArray()
-        val packet = DatagramPacket(buf, buf.size, serverAddr, port)
-        udpSocket.send(packet)
-        return ""
+        val packet = DatagramPacket(buf, buf.size, serverAddress, serverPort)
+        udpSocket?.send(packet)
+        return null
     }
 
     override fun close() {
-        udpSocket.close()
+        udpSocket?.close()
     }
+
+    ///////////////////////
+    // Service Discovery //
+    ///////////////////////
+
+    // TODO refactor these out into their own Class `UDPDiscovery` which extends UDP (+IConnection) or just IConnection
 
     fun discoverConnections(context: Context) {
         val msg = "DISCOVER_RPIBOT"
         val socket = DatagramSocket(broadcast_port)
         socket.broadcast = true
-        val packet = DatagramPacket(msg.toByteArray(), msg.length, getBroadcastAddress(context), port)
+        val packet = DatagramPacket(msg.toByteArray(), msg.length, getBroadcastAddress(context), serverBroadcastPort)
         socket.send(packet)
 
         // TODO Listen for responses

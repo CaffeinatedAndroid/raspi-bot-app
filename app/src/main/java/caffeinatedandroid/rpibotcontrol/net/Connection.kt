@@ -5,7 +5,8 @@ import java.io.Closeable
 
 interface IConnection: Closeable {
     fun connect()
-    fun send(msgType: MessageType, msg: String): String
+    fun isConnected(): Boolean
+    fun send(msgType: MessageType, msg: String): String?
 }
 
 enum class MessageType {

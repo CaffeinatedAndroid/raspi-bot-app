@@ -23,11 +23,11 @@ class TCP(private val host: String, private val port: Int = defaultTcpPort) : IC
         `in` = BufferedReader(InputStreamReader(clientSocket!!.getInputStream()))
     }
 
-    fun isConnected(): Boolean {
+    override fun isConnected(): Boolean {
         return clientSocket?.isConnected ?: false
     }
 
-    override fun send(msgType: MessageType, msg: String): String {
+    override fun send(msgType: MessageType, msg: String): String? {
         out.println(msg)
         return `in`.readLine()
     }
