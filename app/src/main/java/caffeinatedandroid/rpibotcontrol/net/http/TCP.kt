@@ -33,8 +33,12 @@ class TCP(private val host: String, private val port: Int = defaultTcpPort) : IC
     }
 
     override fun close() {
-        `in`.close()
-        out.close()
+        if (this::`in`.isInitialized) {
+            `in`.close()
+        }
+        if (this::out.isInitialized) {
+            out.close()
+        }
         clientSocket?.close()
     }
 }

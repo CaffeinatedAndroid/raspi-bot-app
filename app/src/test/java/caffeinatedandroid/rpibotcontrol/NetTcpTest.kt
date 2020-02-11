@@ -22,7 +22,10 @@ class NetTcpTest {
             server.soTimeout = 5000
             thread(start = true) {
                 server.use { server ->
-                    server.accept()
+                    //while (server.isBound) {
+                    val socket = server.accept()
+                    // TODO repeat received message back to client
+                    //}
                 }
             }
         }
@@ -51,5 +54,32 @@ class NetTcpTest {
             isConnected = tcp.isConnected()
         }
         assertThat(isConnected).isTrue()
+    }
+
+//    @Test
+//    fun sendMessage() {
+//        val tcp = TCP("localhost")
+//        tcp.use {
+//            tcp.connect()
+//            tcp.send(MessageType.MoveForward, "forward")
+//        }
+//    }
+
+//    @Test
+//    fun sendMessage_checkResponse() {
+//        val tcp = TCP("localhost")
+//        val message = "forward"
+//        var response = "default"
+//        tcp.use {
+//            tcp.connect()
+//            response = tcp.send(MessageType.MoveForward, message)
+//        }
+//        assertThat(response).isEqualTo(message)
+//    }
+
+    @Test
+    fun closeConnectionBeforeConnected() {
+        val tcp = TCP("localhost")
+        tcp.close()
     }
 }
