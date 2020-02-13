@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import caffeinatedandroid.rpibotcontrol.R
 
 class ToolsFragment : Fragment() {
@@ -19,8 +19,7 @@ class ToolsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        toolsViewModel =
-            ViewModelProviders.of(this).get(ToolsViewModel::class.java)
+        toolsViewModel = ViewModelProvider(this).get(ToolsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_tools, container, false)
         val textView: TextView = root.findViewById(R.id.text_tools)
         toolsViewModel.text.observe(this, Observer {
