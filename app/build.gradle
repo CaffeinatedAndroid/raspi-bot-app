@@ -104,13 +104,6 @@ android {
     }
 }
 
-configurations.all {
-    // Fix for JUnit bug (unresolved references) when using JUnit 4.13 and Android Studio 3.5.3
-    // https://stackoverflow.com/a/59715907/508098
-    // (Try removing this block after JUnit or Android Studio gets updated)
-    resolutionStrategy.force "junit:junit:$junit_version"
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -124,7 +117,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
     // Testing
-    testImplementation "junit:junit:$junit_version"
+    testImplementation "junit:junit:4.13"
     testImplementation 'com.google.truth:truth:1.0.1'
     testImplementation 'com.google.truth.extensions:truth-java8-extension:1.0.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
