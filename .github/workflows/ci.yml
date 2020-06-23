@@ -37,7 +37,7 @@ jobs:
           api-level: 29
           # Runs: Build, unit tests, instrumented tests, then combines coverage reports
           script: ./gradlew jacocoCombinedTestReports
-      - uses: paambaati/codeclimate-action@v2.6
+      - uses: paambaati/codeclimate-action@v2.6.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
