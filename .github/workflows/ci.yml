@@ -12,6 +12,7 @@ on:
 
 jobs:
   test:
+    name: Build, test, coverage
     # Run on macOS, as currently it is only runner with hardware acceleration (HAXM) installed
     runs-on: macOS-latest
     steps:
@@ -51,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: app/build/reports/coverage/debug
+          path: app/build/reports/coverage/jacocoCombinedTestReports
