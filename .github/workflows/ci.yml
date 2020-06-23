@@ -37,6 +37,12 @@ jobs:
           api-level: 29
           # Runs: Build, unit tests, instrumented tests, then combines coverage reports
           script: ./gradlew jacocoCombinedTestReports
+      - uses: paambaati/codeclimate-action@v2.6
+          env:
+            CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          with:
+            coverageCommand: echo "Coverage already calculated - skipping calculating coverage"
+            coverageLocations: ${{github.workspace}}/app/build/reports/coverage/jacocoCombinedTestReports/jacocoCombinedTestReports.xml:jacoco
       # Artifacts
       - name: Upload unit test results as artifact
         uses: actions/upload-artifact@v2
