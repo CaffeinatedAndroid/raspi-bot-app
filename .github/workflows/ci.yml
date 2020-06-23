@@ -49,6 +49,6 @@ jobs:
           path: app/build/reports/androidTests/connected
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v2
-          with:
-            name: coverage
-            path: app/build/reports/coverage/debug
+        with:
+          name: coverage
+          path: app/build/reports/coverage/debug
