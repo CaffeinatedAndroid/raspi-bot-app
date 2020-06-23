@@ -39,14 +39,14 @@ jobs:
       # Artifacts
       - name: Upload unit test results as artifact
         uses: actions/upload-artifact@v2
-          with:
-            name: Test results (unit)
-            path: app/build/reports/tests/testDebugUnitTest
+        with:
+          name: Test results (unit)
+          path: app/build/reports/tests/testDebugUnitTest
       - name: Upload instrumented test results as artifact
         uses: actions/upload-artifact@v2
-          with:
-            name: Test results (instrumented)
-            path: app/build/reports/androidTests/connected
+        with:
+          name: Test results (instrumented)
+          path: app/build/reports/androidTests/connected
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v2
           with:
