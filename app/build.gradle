@@ -27,8 +27,8 @@ tasks.withType(Test) {
  * http://vgaidarji.me/blog/2017/12/20/how-to-configure-jacoco-for-kotlin-and-java-project/
  * https://stackoverflow.com/a/43992697/508098
  */
-//task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
-task jacocoUnitTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+task jacocoCombinedTestReports(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+//task jacocoUnitTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
     group = "Verification"
     description = "Creates Jacoco test coverage report for Unit and Instrumented Tests (combined) on the Debug build"
     reports {

@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - "**.gitignore"
+      - "**.md"
+  pull_request:
+    paths-ignore:
+      - "**.gitignore"
+      - "**.md"
+
+jobs:
+  test:
+    # Run on macOS, as currently it is only runner with hardware acceleration (HAXM) installed
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            app/build
+            !app/build/jacoco
+            !app/build/outputs
+            !app/build/reports
+            !app/build/test-results
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      # Test and coverage
+      - name: Android tests (unit and instrumented)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          # Runs: Build, unit tests, instrumented tests, then combines coverage reports
+          script: ./gradlew jacocoCombinedTestReports
+      # Artifacts
+      - name: Upload unit test results as artifact
+        uses: actions/upload-artifact@v2
+          with:
+            name: Test results (unit)
+            path: app/build/reports/tests/testDebugUnitTest
+      - name: Upload instrumented test results as artifact
+        uses: actions/upload-artifact@v2
+          with:
+            name: Test results (instrumented)
+            path: app/build/reports/androidTests/connected
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v2
+          with:
+            name: coverage
+            path: app/build/reports/coverage/debug
