@@ -16,7 +16,7 @@ interface IConnection : IConnectionBase {
 }
 
 interface IConnectionManager : IConnectionBase {
-    fun connect(context: Context)
+    suspend fun connect(context: Context)
 }
 
 enum class MessageType {
@@ -55,7 +55,7 @@ object Connection : IConnectionManager {
         conn.connect()
     }
 
-    override fun connect(context: Context) {
+    override suspend fun connect(context: Context) {
         // TEMP testing UDP discovery (will be internal to TCP connection, enabled with a Bool)
         UDP.discoverConnections(context)
     }

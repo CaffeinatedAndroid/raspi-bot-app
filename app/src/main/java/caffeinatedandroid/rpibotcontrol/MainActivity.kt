@@ -16,6 +16,10 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import caffeinatedandroid.rpibotcontrol.net.Connection
 import caffeinatedandroid.rpibotcontrol.ui.home.HomeViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -69,8 +73,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickConnect(view: View) {
-//        Connection.connect(applicationContext)
-        var homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        homeViewModel.textConnectionStatus.value = "Connecting..."
+        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        view.isEnabled = false
+        GlobalScope.launch {
+            Connection.connect(applicationContext)
+            // Update the UI
+            withContext(Dispatchers.Main) {
+                homeViewModel.textConnectionStatus.value = "Connecting..."
+                view.isEnabled = true
+            }
+        }
+
     }
 }
