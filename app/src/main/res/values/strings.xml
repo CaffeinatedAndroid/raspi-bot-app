@@ -16,4 +16,10 @@
     <string name="menu_group_manage">Manage</string>
     <string name="menu_connection">Connection</string>
     <string name="menu_settings">Settings</string>
+
+    <!-- Preferences -->
+    <string name="pref_category_connection">Connection</string>
+    <!-- Preference: Connection -->
+    <string name="pref_key_connection_udp_port">udp_port</string>
+    <string name="pref_title_connection_udp_port">UDP Port</string>
 </resources>
