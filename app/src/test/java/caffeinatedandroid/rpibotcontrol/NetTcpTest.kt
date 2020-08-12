@@ -2,7 +2,6 @@ package caffeinatedandroid.rpibotcontrol
 
 import caffeinatedandroid.rpibotcontrol.net.MessageType
 import caffeinatedandroid.rpibotcontrol.net.http.TCP
-import caffeinatedandroid.rpibotcontrol.net.http.TCP.Companion.defaultTcpPort
 import com.google.common.truth.Truth.assertThat
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -22,7 +21,7 @@ class NetTcpTest {
         @JvmStatic
         fun setupServerSocket() {
             // Simple test TCP server to test connections
-            server = ServerSocket(defaultTcpPort)
+            server = ServerSocket(TCP.defaultPort)
             server.soTimeout = 5000
             thread(start = true) {
                 server.use { server ->

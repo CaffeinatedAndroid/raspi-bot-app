@@ -13,11 +13,11 @@ class NetUdpTest {
 
     companion object {
 
-        lateinit var server: DatagramSocket
+        private lateinit var server: DatagramSocket
 
         // Use UDP_Port+100 to get an unused port for testing only
         private const val PORT_TESTING_OFFSET = 100
-        private const val UDP_TEST_PORT = 51927 + PORT_TESTING_OFFSET // TODO get port from UDP Class
+        private const val UDP_TEST_PORT = UDP.defaultPort + PORT_TESTING_OFFSET
 
         @BeforeClass
         @JvmStatic
@@ -63,7 +63,7 @@ class NetUdpTest {
     fun sendMessage() {
         val udp = UDP("localhost")
         udp.use {
-            udp.serverPort = udp.serverPort + PORT_TESTING_OFFSET
+            UDP.serverPort = UDP.serverPort + PORT_TESTING_OFFSET
             udp.connect()
             udp.send(MessageType.MoveForward, "forward")
         }

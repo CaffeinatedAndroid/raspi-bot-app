@@ -7,10 +7,10 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.Socket
 
-class TCP(private val host: String, private val port: Int = defaultTcpPort) : IConnection {
+class TCP(private val host: String, private val port: Int = defaultPort) : IConnection {
 
     companion object {
-        const val defaultTcpPort = 8088
+        const val defaultPort = 9020
     }
 
     private var clientSocket: Socket? = null
