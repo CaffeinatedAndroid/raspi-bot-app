@@ -11,6 +11,10 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.view.View
+import androidx.lifecycle.ViewModelProvider
+import caffeinatedandroid.rpibotcontrol.net.Connection
+import caffeinatedandroid.rpibotcontrol.ui.home.HomeViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,5 +50,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun clickConnect(view: View) {
+//        Connection.connect(applicationContext)
+        var homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel.textConnectionStatus.value = "Connecting..."
     }
 }

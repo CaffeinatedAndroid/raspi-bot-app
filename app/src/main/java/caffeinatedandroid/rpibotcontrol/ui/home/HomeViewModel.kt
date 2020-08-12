@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    val textConnectionStatus = MutableLiveData<String>().apply {
+        value = "Not Connected"
     }
-    val text: LiveData<String> = _text
 }
