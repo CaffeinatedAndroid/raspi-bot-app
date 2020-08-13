@@ -22,5 +22,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         editTextPreference?.setOnBindEditTextListener {
             it.inputType = InputType.TYPE_CLASS_NUMBER
         }
+
+        preferenceManager.findPreference<EditTextPreference>(getString(R.string.pref_key_connection_tcp_port))
+            ?.setOnBindEditTextListener {
+                it.inputType = InputType.TYPE_CLASS_NUMBER
+            }
     }
 }

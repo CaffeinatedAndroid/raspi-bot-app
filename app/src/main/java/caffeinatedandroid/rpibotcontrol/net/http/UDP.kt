@@ -42,7 +42,6 @@ class UDP(host: String, private val port: Int = defaultPort) : IConnection {
             context: Context,
             broadcast_port: Int = defaultBroadcastPort
         ) {
-            // TODO optional port/serverPort params
             val msg = "DISCOVER_RPIBOT_ADDR"
             val socket = DatagramSocket(broadcast_port)
             socket.broadcast = true

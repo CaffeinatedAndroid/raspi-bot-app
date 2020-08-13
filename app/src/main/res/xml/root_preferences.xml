@@ -6,6 +6,14 @@
     <PreferenceCategory app:title="@string/pref_category_connection">
 
         <EditTextPreference
+            app:key="@string/pref_key_connection_tcp_port"
+            app:title="@string/pref_title_connection_tcp_port"
+            app:defaultValue="9020"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
             app:key="@string/pref_key_connection_udp_port"
             app:title="@string/pref_title_connection_udp_port"
             app:defaultValue="9021"
