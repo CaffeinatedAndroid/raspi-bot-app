@@ -52,6 +52,7 @@ class UDP(host: String, private val port: Int = defaultPort) : IConnection {
                 serverBroadcastPort
             )
             socket.send(packet)
+            socket.close()
 
             // TODO Listen for responses
         }
@@ -97,7 +98,7 @@ class UDP(host: String, private val port: Int = defaultPort) : IConnection {
             throw IOException("DatagramSocket not bound. Connect first to bind to port.")
         }
         val buf = msg.toByteArray()
-        val packet = DatagramPacket(buf, buf.size, serverAddress, port)
+        val packet = DatagramPacket(buf, buf.size, serverAddress, serverPort)
         udpSocket?.send(packet)
         return null
     }

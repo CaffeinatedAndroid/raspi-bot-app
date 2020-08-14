@@ -3,11 +3,14 @@ package caffeinatedandroid.rpibotcontrol
 import caffeinatedandroid.rpibotcontrol.net.MessageType
 import caffeinatedandroid.rpibotcontrol.net.http.UDP
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.*
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import java.io.IOException
+import java.net.DatagramPacket
 import java.net.DatagramSocket
+import java.net.InetAddress
 
 class NetUdpTest {
 
@@ -15,15 +18,11 @@ class NetUdpTest {
 
         private lateinit var server: DatagramSocket
 
-        // Use UDP_Port+100 to get an unused port for testing only
-        private const val PORT_TESTING_OFFSET = 100
-        private const val UDP_TEST_PORT = UDP.defaultPort + PORT_TESTING_OFFSET
-
         @BeforeClass
         @JvmStatic
         fun setupServerSocket() {
-            // Simple test UDP server to test connections
-            server = DatagramSocket(UDP_TEST_PORT)
+            UDP.serverPort = UDP.serverPort + 100
+            server = DatagramSocket(UDP.serverPort)
         }
 
         @AfterClass
@@ -63,9 +62,32 @@ class NetUdpTest {
     fun sendMessage() {
         val udp = UDP("localhost")
         udp.use {
-            UDP.serverPort = UDP.serverPort + PORT_TESTING_OFFSET
             udp.connect()
             udp.send(MessageType.MoveForward, "forward")
+        }
+    }
+
+    @Test
+    fun sentMessageReceived() {
+        val msg = "forward"
+        val buffer = ByteArray(16)
+        val packet = DatagramPacket(
+            buffer,
+            buffer.size,
+            InetAddress.getByName("localhost"),
+            UDP.serverPort
+        )
+        val udp = UDP("localhost")
+        udp.use {
+            udp.connect()
+            runBlocking {
+                withContext(Dispatchers.IO) {
+                    udp.send(MessageType.MoveForward, msg)
+                    server.receive(packet)
+                }
+                val result = String(packet.data, 0, packet.length)
+                assertThat(result.trim()).isEqualTo(msg.trim())
+            }
         }
     }
 
