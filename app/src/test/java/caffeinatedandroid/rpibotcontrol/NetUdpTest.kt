@@ -35,7 +35,7 @@ class NetUdpTest {
     @Test
     fun udpDoesNotConnectAutomaticallyAndHandlesPrematureClose() {
         val udp = UDP("localhost")
-        var isBound = false
+        var isBound: Boolean
         // Connections do not apply to UDP, despite the interface function names
         // Instead, UDP.connect and isConnected refers to the DatagramSocket's bound status.
         udp.use {
@@ -48,7 +48,7 @@ class NetUdpTest {
     @Test
     fun udpSocketConnectsToPortSuccessfully() {
         val udp = UDP("localhost")
-        var isBound = false
+        var isBound: Boolean
         // Connections do not apply to UDP, despite the interface function names
         // Instead, UDP.connect and isConnected refers to the DatagramSocket's bound status.
         udp.use {

@@ -62,7 +62,7 @@ class NetTcpTest {
     fun tcpSocketConnectsToServer() {
         // Initialise TCP then connect to test server
         val tcp = TCP("localhost")
-        var isConnected = false
+        var isConnected: Boolean
         tcp.use {
             tcp.connect()
             isConnected = tcp.isConnected()
@@ -83,7 +83,7 @@ class NetTcpTest {
     fun sendMessage_checkResponse() {
         val tcp = TCP("localhost")
         val message = "forward"
-        var response: String? = "default"
+        var response: String?
         tcp.use {
             tcp.connect()
             response = tcp.send(MessageType.MoveForward, message)
