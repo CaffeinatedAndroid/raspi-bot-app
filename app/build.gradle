@@ -69,12 +69,31 @@ task jacocoCombinedTestReports(type: JacocoReport, dependsOn: ['testDebugUnitTes
     ])
 }
 
+task coverageAndOpenUnit(type: Exec) {
+    //execute test task first
+    // dependsOn 'testDebug'
+    dependsOn 'jacocoCombinedTestReports'
+
+    def os = org.gradle.internal.os.OperatingSystem.current()
+
+    //set the base dir
+    // workingDir './build/reports/tests/testDebugUnitTest/debug'
+    workingDir './build/reports/coverage/jacocoCombinedTestReports/html'
+    //launch cmd and open the file with the default associated program
+    // NB: Only works on Windows
+    if (os.isWindows()) {
+        commandLine 'cmd', '/c', 'start index.html'
+    } else {
+        commandLine 'open', 'index.html'
+    }
+}
+
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "caffeinatedandroid.rpibotcontrol"
         minSdkVersion 25
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -109,12 +128,12 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     // UI / Navigation drawer
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     // Testing
     testImplementation "junit:junit:4.13.1"
     testImplementation 'com.google.truth:truth:1.0.1'
